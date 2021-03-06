@@ -1,20 +1,63 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
+  <ion-grid>
+    <ion-row class="table">
+      <div class="table-row title">
+        <div class="table-row-item" *ngFor="let field of fieldNames; index as index">
+          <div class="inner" [ngClass]="{'block':field.name == 'include'}">
+            <div>{{field.title}}</div>
+            <div *ngIf="field.sharp">#</div>
+            <div class="sort-block" *ngIf="field.name!== 'include'">
+              <div class="triange" (click)="sort(field.name, 'desc')"
+                [ngClass]="{'active': (sortFilter.sortingOrder === 'desc' && sortFilter.sortedName === field.name)}">
+              </div>
+              <div class="triange rotate180" (click)="sort(field.name, 'asc')"
+                [ngClass]="{'active': (sortFilter.sortingOrder === 'asc' && sortFilter.sortedName === field.name)}">
+              </div>
+            </div>
+            <div *ngIf="field.name == 'include'" class="include">
+             
+              <ion-checkbox [ngModel]="allChecked" (click)="toggleCheckboxes($event)"></ion-checkbox>
+              <ion-label>
+                All
+              </ion-label>
+            </div>
+          </div>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+        </div>
+      </div>
+      <div class="table-content">
+        <div class="table-row" *ngFor="let item of data | sort : sortFilter;" [ngClass]="{'selected': item.include}">
+          <div class="table-row-item">
+            <div class="inner">{{item?.equip}}</div>
+          </div>
+          <div class="table-row-item">
+            <div class="inner">{{item.mfg}}</div>
+          </div>
+          <div class="table-row-item">
+            <div class="inner">{{item.model}}</div>
+          </div>
+          <div class="table-row-item">
+            <div class="inner word-break">{{item.serial}}</div>
+          </div>
+          <div class="table-row-item">
+            <div class="inner">{{item.compartment}}</div>
+          </div>
+          <div class="table-row-item">
+            <div class="inner word-break">{{item.work_order}}</div>
+          </div>
+          <div class="table-row-item">
+            <div class="inner word-break">{{item.date | date: 'dd/MM/YYYY'}}</div>
+          </div>
+          <div class="table-row-item ">
+            <div class="inner red">{{item.id}}</div>
+          </div>
+          <div class="table-row-item">
+            <div class="inner">
+              <ion-checkbox [(ngModel)]="item.include" (ionChange)="updateSelect($event)"></ion-checkbox>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ion-row>
+  </ion-grid>
 </ion-content>
